@@ -1,12 +1,30 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Phone, MessageCircle, MapPin, CheckCircle2, Clock, Map } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Tracking() {
   const navigate = useNavigate();
-  // Using 'preparing' state for prototype
-  const [status, setStatus] = useState('preparing');
+  const { orders } = useDemo();
+  
+  // Get latest order for tracking, or dummy if none
+  const activeOrder = orders.length > 0 ? orders[0] : {
+    id: 'ORD-10234',
+    status: 'New',
+    restaurantName: 'Heart Attack'
+  };
 
+  const statusMap = {
+    'New': 0,
+    'Accepted': 0,
+    'Preparing': 1,
+    'Ready for pickup': 1,
+    'Picked up': 2,
+    'On the way': 2,
+    'Delivered': 3
+  };
+
+  const currentStep = statusMap[activeOrder.status] || 0;
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <header className="bg-white p-4 flex items-center justify-between border-b border-gray-100 sticky top-0 z-10">
@@ -16,7 +34,7 @@ export default function Tracking() {
           </button>
           <h1 className="text-lg font-bold text-dark">تتبع الطلب</h1>
         </div>
-        <span className="text-sm font-bold text-primary">#ORD-10234</span>
+        <span className="text-sm font-bold text-primary">#{activeOrder.id}</span>
       </header>
 
       {/* Map Placeholder */}
@@ -44,40 +62,51 @@ export default function Tracking() {
           </div>
         </div>
 
-        {/* Timeline */}
+          {/* Timeline */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-          <h2 className="font-bold text-dark mb-6">حالة الطلب</h2>
+          <h2 className="font-bold text-dark mb-6">حالة الطلب: {activeOrder.status}</h2>
           <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-gray-200 before:to-transparent">
             {/* Step 1 */}
-            <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-success text-white shrink-0 shadow-sm">
-                <CheckCircle2 size={14} />
+            <div className={`relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group ${currentStep >= 0 ? 'is-active' : ''}`}>
+              <div className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-white shrink-0 shadow-sm ${currentStep >= 0 ? (currentStep === 0 ? 'bg-primary text-white shadow-primary/30 animate-pulse' : 'bg-success text-white') : 'bg-gray-200 text-gray-400'}`}>
+                {currentStep > 0 ? <CheckCircle2 size={14} /> : <div className="w-2 h-2 bg-white rounded-full"></div>}
               </div>
-              <div className="w-[calc(100%-2.5rem)] px-4">
-                <h3 className="font-bold text-dark text-sm">تم استلام الطلب</h3>
-                <p className="text-xs text-gray-500 mt-1">10:45 ص</p>
+              <div className={`w-[calc(100%-2.5rem)] px-4 ${currentStep < 0 ? 'opacity-50' : ''}`}>
+                <h3 className={`font-bold text-sm ${currentStep === 0 ? 'text-primary' : 'text-dark'}`}>تم استلام الطلب</h3>
+                <p className="text-xs text-gray-500 mt-1">المطعم يقوم بمراجعة طلبك</p>
               </div>
             </div>
 
             {/* Step 2 */}
-            <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-primary text-white shrink-0 shadow-sm shadow-primary/30 animate-pulse">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
+            <div className={`relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group ${currentStep >= 1 ? 'is-active' : ''}`}>
+              <div className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-white shrink-0 shadow-sm ${currentStep >= 1 ? (currentStep === 1 ? 'bg-primary text-white shadow-primary/30 animate-pulse' : 'bg-success text-white') : 'bg-gray-200 text-gray-400'}`}>
+                {currentStep > 1 ? <CheckCircle2 size={14} /> : <div className="w-2 h-2 bg-white rounded-full"></div>}
               </div>
-              <div className="w-[calc(100%-2.5rem)] px-4">
-                <h3 className="font-bold text-primary text-sm">جاري التجهيز</h3>
+              <div className={`w-[calc(100%-2.5rem)] px-4 ${currentStep < 1 ? 'opacity-50' : ''}`}>
+                <h3 className={`font-bold text-sm ${currentStep === 1 ? 'text-primary' : 'text-dark'}`}>جاري التجهيز</h3>
                 <p className="text-xs text-gray-500 mt-1">المطعم يقوم بتحضير طلبك الآن</p>
               </div>
             </div>
 
             {/* Step 3 */}
-            <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
-              <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-gray-200 text-gray-400 shrink-0">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
+            <div className={`relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group ${currentStep >= 2 ? 'is-active' : ''}`}>
+              <div className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-white shrink-0 shadow-sm ${currentStep >= 2 ? (currentStep === 2 ? 'bg-primary text-white shadow-primary/30 animate-pulse' : 'bg-success text-white') : 'bg-gray-200 text-gray-400'}`}>
+                {currentStep > 2 ? <CheckCircle2 size={14} /> : <div className="w-2 h-2 bg-white rounded-full"></div>}
               </div>
-              <div className="w-[calc(100%-2.5rem)] px-4 opacity-50">
-                <h3 className="font-bold text-dark text-sm">في الطريق إليك</h3>
+              <div className={`w-[calc(100%-2.5rem)] px-4 ${currentStep < 2 ? 'opacity-50' : ''}`}>
+                <h3 className={`font-bold text-sm ${currentStep === 2 ? 'text-primary' : 'text-dark'}`}>في الطريق إليك</h3>
                 <p className="text-xs text-gray-500 mt-1">المندوب في طريقه لتسليم الطلب</p>
+              </div>
+            </div>
+
+            {/* Step 4 */}
+            <div className={`relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group ${currentStep >= 3 ? 'is-active' : ''}`}>
+              <div className={`flex items-center justify-center w-6 h-6 rounded-full border-2 border-white shrink-0 shadow-sm ${currentStep >= 3 ? 'bg-success text-white' : 'bg-gray-200 text-gray-400'}`}>
+                {currentStep >= 3 ? <CheckCircle2 size={14} /> : <div className="w-2 h-2 bg-white rounded-full"></div>}
+              </div>
+              <div className={`w-[calc(100%-2.5rem)] px-4 ${currentStep < 3 ? 'opacity-50' : ''}`}>
+                <h3 className={`font-bold text-sm ${currentStep >= 3 ? 'text-success' : 'text-dark'}`}>تم التسليم</h3>
+                <p className="text-xs text-gray-500 mt-1">بالهناء والشفاء</p>
               </div>
             </div>
           </div>
@@ -89,7 +118,7 @@ export default function Tracking() {
             <img src="https://ui-avatars.com/api/?name=Heart+Attack&background=random" alt="Restaurant" className="w-12 h-12 rounded-full object-cover" />
             <div>
               <p className="text-xs text-gray-500 mb-1">المطعم</p>
-              <h2 className="font-bold text-dark text-sm">Heart Attack</h2>
+              <h2 className="font-bold text-dark text-sm">{activeOrder.restaurantName || 'Heart Attack'}</h2>
             </div>
           </div>
           <div className="flex gap-2">

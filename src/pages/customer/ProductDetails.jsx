@@ -1,21 +1,31 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, Minus, Plus, Share2 } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function ProductDetails() {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const { addToCart } = useDemo();
   const [quantity, setQuantity] = useState(1);
   const [size, setSize] = useState('medium');
 
   // Static mock item for prototype
   const item = {
+    id: id || 'item_1',
     name: 'وجبة هارت أتاك',
     description: '3 قطع دجاج مقرمش بخلطة هارت أتاك السرية، يقدم مع بطاطس مقلية، كول سلو، خبز طازج ومشروب من اختيارك.',
     price: 180,
     image: 'https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
   };
 
-  const handleAdd = () => navigate(-1);
+  // Mock restaurant for demo context
+  const restaurant = { id: 'r1', name: 'Heart Attack - المهندسين' };
+
+  const handleAdd = () => {
+    addToCart(item, restaurant, quantity);
+    navigate(-1);
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white pb-24">

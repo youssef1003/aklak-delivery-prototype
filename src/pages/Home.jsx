@@ -12,21 +12,21 @@ export default function Home() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
             </span>
-            نسخة تجريبية (Prototype V1)
+            نسخة تجريبية (Sprint 1 Product Demo)
           </div>
           <h1 className="text-4xl md:text-6xl font-extrabold text-dark mb-6 tracking-tight">
             مرحباً بك في <span className="text-primary">أكلك Aklak</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            المنصة الأحدث لتوصيل الطعام، المصممة خصيصاً لتناسب احتياجات السوق في <strong className="text-dark">مصر والسعودية</strong>. تجربة مستخدم عصرية، إدارة متكاملة للمطاعم، ونظام تتبع ذكي للمناديب.
+            المنصة الأحدث لتوصيل الطعام. تم ترقية هذه النسخة (Sprint 1) لتدعم <strong>إدارة حالة محلية (Local State)</strong> متقدمة تحاكي دورة حياة الطلب بالكامل بين العميل، المطعم، والمندوب.
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="#prototypes" className="bg-primary text-white px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30">
-              تصفح الواجهات
-            </a>
-            <a href="#features" className="bg-white text-dark border border-gray-200 px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors">
-              اكتشف المميزات
+            <Link to="/customer" className="bg-primary text-white px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30">
+              ابدأ تجربة الطلب (العميل)
+            </Link>
+            <a href="#prototypes" className="bg-white text-dark border border-gray-200 px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors">
+              تصفح كل الواجهات
             </a>
           </div>
         </div>

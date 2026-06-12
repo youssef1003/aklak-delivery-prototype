@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, MapPin, Bell, Star, Clock, Home as HomeIcon, ShoppingCart, User, ReceiptText } from 'lucide-react';
 import { MOCK_CATEGORIES, MOCK_RESTAURANTS } from '../../data/mockData';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Home() {
   const navigate = useNavigate();
+  const { cart, location } = useDemo();
   const [activeTab, setActiveTab] = useState('home');
 
   return (
@@ -18,7 +20,9 @@ export default function Home() {
             </div>
             <div>
               <p className="text-xs text-gray-500">التوصيل إلى</p>
-              <p className="text-sm font-bold text-dark flex items-center gap-1">المنزل، شارع التحرير <span className="text-primary text-xs">▼</span></p>
+              <p className="text-sm font-bold text-dark flex items-center gap-1">
+                {location.city}، {location.country === 'EG' ? 'مصر' : 'السعودية'} <span className="text-primary text-xs">▼</span>
+              </p>
             </div>
           </div>
           <button className="relative p-2 bg-gray-50 rounded-full text-gray-600">
@@ -149,7 +153,11 @@ export default function Home() {
         </button>
         <button onClick={() => { setActiveTab('cart'); navigate('/customer/cart'); }} className={`flex flex-col items-center gap-1 ${activeTab === 'cart' ? 'text-primary' : 'text-gray-400'} relative`}>
           <ShoppingCart size={24} />
-          <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">2</span>
+          {cart.length > 0 && (
+            <span className="absolute -top-1 -right-2 bg-red-500 text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+              {cart.reduce((sum, item) => sum + item.quantity, 0)}
+            </span>
+          )}
           <span className="text-[10px] font-medium">السلة</span>
         </button>
         <button onClick={() => { setActiveTab('profile'); navigate('/customer/profile'); }} className={`flex flex-col items-center gap-1 ${activeTab === 'profile' ? 'text-primary' : 'text-gray-400'}`}>

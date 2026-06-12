@@ -1,4 +1,5 @@
 import { Outlet } from 'react-router-dom';
+import DemoBadge from '../components/DemoBadge';
 
 export default function MobileLayout() {
   return (

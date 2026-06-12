@@ -1,6 +1,25 @@
 import { TrendingUp, ShoppingBag, Clock, Star, DollarSign } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Overview() {
+  const { orders } = useDemo();
+  
+  const todayOrders = orders; // Simplified for demo
+  const revenue = todayOrders.reduce((sum, order) => sum + order.total, 0);
+
+  const getStatusText = (status) => {
+    const map = {
+      'New': 'جديد',
+      'Accepted': 'تم القبول',
+      'Preparing': 'جاري التجهيز',
+      'Ready for pickup': 'في انتظار المندوب',
+      'Picked up': 'في الطريق',
+      'On the way': 'في الطريق',
+      'Delivered': 'مكتمل',
+      'Completed': 'مكتمل'
+    };
+    return map[status] || status;
+  };
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-dark">نظرة عامة</h1>
@@ -17,7 +36,7 @@ export default function Overview() {
             </span>
           </div>
           <p className="text-gray-500 text-sm mb-1">طلبات اليوم</p>
-          <h3 className="text-2xl font-bold text-dark">145</h3>
+          <h3 className="text-2xl font-bold text-dark">{todayOrders.length}</h3>
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
@@ -30,7 +49,7 @@ export default function Overview() {
             </span>
           </div>
           <p className="text-gray-500 text-sm mb-1">إيرادات اليوم</p>
-          <h3 className="text-2xl font-bold text-dark">24,500 ج.م</h3>
+          <h3 className="text-2xl font-bold text-dark">{revenue} ج.م</h3>
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
@@ -73,20 +92,23 @@ export default function Overview() {
                 </tr>
               </thead>
               <tbody>
-                <tr className="border-b border-gray-50">
-                  <td className="py-4 px-4 font-bold">#ORD-10234</td>
-                  <td className="py-4 px-4">أحمد محمد</td>
-                  <td className="py-4 px-4 text-gray-500">منذ 5 دقائق</td>
-                  <td className="py-4 px-4 font-bold text-primary">390 ج.م</td>
-                  <td className="py-4 px-4"><span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">جاري التجهيز</span></td>
-                </tr>
-                <tr className="border-b border-gray-50">
-                  <td className="py-4 px-4 font-bold">#ORD-10235</td>
-                  <td className="py-4 px-4">سارة خالد</td>
-                  <td className="py-4 px-4 text-gray-500">منذ 12 دقيقة</td>
-                  <td className="py-4 px-4 font-bold text-primary">470 ج.م</td>
-                  <td className="py-4 px-4"><span className="bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs font-bold">في انتظار المندوب</span></td>
-                </tr>
+                {orders.slice(0, 5).map(order => (
+                  <tr key={order.id} className="border-b border-gray-50">
+                    <td className="py-4 px-4 font-bold">#{order.id}</td>
+                    <td className="py-4 px-4">{order.customer.name}</td>
+                    <td className="py-4 px-4 text-gray-500">{new Date(order.createdAt).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' })}</td>
+                    <td className="py-4 px-4 font-bold text-primary">{order.total} ج.م</td>
+                    <td className="py-4 px-4">
+                      <span className={`px-2 py-1 rounded text-xs font-bold ${
+                        ['Completed', 'Delivered'].includes(order.status) ? 'bg-green-100 text-green-700' :
+                        order.status === 'Ready for pickup' ? 'bg-yellow-100 text-yellow-700' :
+                        order.status === 'Preparing' ? 'bg-blue-100 text-blue-700' : 'bg-gray-200 text-gray-700'
+                      }`}>
+                        {getStatusText(order.status)}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

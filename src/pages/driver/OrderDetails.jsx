@@ -1,11 +1,33 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, Map, Phone, MessageCircle, Navigation, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function OrderDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [step, setStep] = useState(1); // 1: Going to rest, 2: Picked up, 3: Delivered
+  const { orders, updateOrderStatus } = useDemo();
+  
+  const order = orders.find(o => o.id === id) || { status: 'Picked up', restaurantName: 'Restaurant', customer: { name: 'Customer', address: 'Address' }, total: 0 };
+  
+  const statusToStep = {
+    'Ready for pickup': 1,
+    'Picked up': 2,
+    'On the way': 2,
+    'Delivered': 3
+  };
+  
+  const step = statusToStep[order.status] || 1;
+
+  const handleNextStep = () => {
+    if (order.status === 'Ready for pickup') {
+      updateOrderStatus(id, 'Picked up');
+    } else if (order.status === 'Picked up' || order.status === 'On the way') {
+      updateOrderStatus(id, 'Delivered');
+      alert('تم التوصيل بنجاح!');
+      navigate('/driver/orders');
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -52,10 +74,10 @@ export default function OrderDetails() {
           
           <div className="flex justify-between items-center mb-4">
             <div>
-              <p className="font-bold text-lg text-dark mb-1">{step === 1 ? 'Heart Attack' : 'أحمد محمد'}</p>
+              <p className="font-bold text-lg text-dark mb-1">{step === 1 ? order.restaurantName : order.customer.name}</p>
               <p className="text-sm text-gray-500 flex items-center gap-1">
                 <Navigation size={14} /> 
-                {step === 1 ? 'المهندسين، شارع جامعة الدول' : 'الدقي، شارع التحرير، عمارة 15'}
+                {step === 1 ? 'موقع المطعم' : order.customer.address}
               </p>
             </div>
             <div className="flex gap-2">
@@ -70,7 +92,7 @@ export default function OrderDetails() {
 
           <div className="bg-gray-50 p-3 rounded-xl border border-gray-100 text-sm">
             <p className="text-gray-500 mb-1">ملاحظات:</p>
-            <p className="font-medium text-dark">{step === 1 ? 'رقم الطلب #ORD-10985' : 'الدور الرابع، شقة 12. يرجى الاتصال عند الوصول.'}</p>
+            <p className="font-medium text-dark">{step === 1 ? `رقم الطلب #${order.id}` : 'الدور الرابع، شقة 12. يرجى الاتصال عند الوصول.'}</p>
           </div>
         </div>
 
@@ -78,7 +100,7 @@ export default function OrderDetails() {
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
             <p className="text-xs text-gray-500 mb-1">المطلوب تحصيله من العميل</p>
-            <p className="font-bold text-xl text-primary">335 ج.م</p>
+            <p className="font-bold text-xl text-primary">{order.total} ج.م</p>
           </div>
           <span className="bg-green-100 text-green-700 px-3 py-1.5 rounded-lg text-sm font-bold">دفع نقدي</span>
         </div>
@@ -87,22 +109,14 @@ export default function OrderDetails() {
       {/* Action Button */}
       <div className="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-100 p-4 z-20 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
         {step === 1 && (
-          <button onClick={() => setStep(2)} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-green-600/30">
-            <span>تم الوصول للمطعم</span>
+          <button onClick={handleNextStep} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-green-600/30">
+            <span>تم الوصول للمطعم واستلام الطلب</span>
           </button>
         )}
         {step === 2 && (
-          <button onClick={() => setStep(3)} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-green-600/30">
-            <span>تم استلام الطلب وبدء التوصيل</span>
-          </button>
-        )}
-        {step === 3 && (
-          <button onClick={() => {
-            alert('تم التوصيل بنجاح!');
-            navigate('/driver/orders');
-          }} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-green-600/30">
+          <button onClick={handleNextStep} className="w-full bg-green-600 text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-green-600/30">
             <CheckCircle2 size={20} />
-            <span>تم التسليم بنجاح</span>
+            <span>تم التسليم للعميل بنجاح</span>
           </button>
         )}
       </div>

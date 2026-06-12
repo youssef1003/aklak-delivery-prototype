@@ -1,13 +1,29 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, MapPin, CreditCard, Banknote, Wallet, Edit3, ArrowLeft } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Checkout() {
   const navigate = useNavigate();
+  const { cart, promoCode, placeOrder, location } = useDemo();
   const [paymentMethod, setPaymentMethod] = useState('cash');
 
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const discount = promoCode ? (subtotal * promoCode.discountPercent / 100) : 0;
+  const deliveryFee = cart.length > 0 ? 15 : 0;
+  const total = subtotal - discount + deliveryFee;
+
   const handlePlaceOrder = () => {
-    // Show success and redirect to tracking
+    if (cart.length === 0) return;
+    
+    // Mock customer info based on location
+    const customer = {
+      name: 'أحمد محمود',
+      phone: '01012345678',
+      address: `15 شارع التحرير، الدقي، ${location.city}، ${location.country === 'EG' ? 'مصر' : 'السعودية'}`
+    };
+
+    placeOrder(customer, paymentMethod);
     navigate('/customer/tracking');
   };
 
@@ -38,7 +54,7 @@ export default function Checkout() {
             <div>
               <h3 className="font-bold text-dark text-sm mb-1">المنزل</h3>
               <p className="text-gray-500 text-xs leading-relaxed">
-                15 شارع التحرير، الدقي، الجيزة، الدور 4، شقة 12
+                15 شارع التحرير، الدقي، {location.city}
               </p>
               <p className="text-dark text-xs font-medium mt-2">رقم الهاتف: 01012345678</p>
             </div>
@@ -94,7 +110,7 @@ export default function Checkout() {
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 flex justify-between items-center">
           <div>
             <p className="text-gray-500 text-sm mb-1">الإجمالي المطلوب</p>
-            <p className="font-bold text-xl text-primary">335 ج.م</p>
+            <p className="font-bold text-xl text-primary">{total} ج.م</p>
           </div>
           <button onClick={() => navigate(-1)} className="text-primary text-sm font-medium underline">مراجعة الطلب</button>
         </div>
@@ -102,7 +118,11 @@ export default function Checkout() {
 
       {/* Bottom Bar */}
       <div className="fixed bottom-0 w-full max-w-md bg-white border-t border-gray-100 p-4 z-20 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.05)]">
-        <button onClick={handlePlaceOrder} className="w-full bg-primary text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-primary/30 group hover:bg-primary/90 transition-colors">
+        <button 
+          onClick={handlePlaceOrder} 
+          disabled={cart.length === 0}
+          className="w-full bg-primary text-white py-4 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg shadow-primary/30 group hover:bg-primary/90 transition-colors disabled:opacity-50"
+        >
           <span>تأكيد الطلب</span>
         </button>
       </div>

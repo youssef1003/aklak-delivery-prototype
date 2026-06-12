@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { LayoutDashboard, ShoppingBag, Utensils, Tag, BarChart3, Settings, Users, LogOut, Globe, MapPin, Truck, Ticket, LifeBuoy } from 'lucide-react';
+import DemoBadge from '../components/DemoBadge';
 
 export default function DashboardLayout({ type }) {
   const location = useLocation();
@@ -79,6 +80,7 @@ export default function DashboardLayout({ type }) {
           <Outlet />
         </div>
       </main>
+      <DemoBadge />
     </div>
   );
 }

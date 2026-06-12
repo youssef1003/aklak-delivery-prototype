@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, MapPin, CreditCard, Heart, Bell, HelpCircle, LogOut, Settings, ChevronRight } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Profile() {
   const navigate = useNavigate();
+  const { orders } = useDemo();
 
   const menuItems = [
     { icon: <User size={20} />, label: 'المعلومات الشخصية', path: '#' },
@@ -41,7 +43,7 @@ export default function Profile() {
         {/* Stats */}
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">
-            <p className="text-2xl font-bold text-primary mb-1">15</p>
+            <p className="text-2xl font-bold text-primary mb-1">{orders.length}</p>
             <p className="text-gray-500 text-sm">إجمالي الطلبات</p>
           </div>
           <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-center">

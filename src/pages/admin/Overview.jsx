@@ -1,6 +1,10 @@
 import { Users, Store, TrendingUp, DollarSign, Activity, AlertTriangle } from 'lucide-react';
+import { useDemo } from '../../context/DemoContext';
 
 export default function Overview() {
+  const { orders } = useDemo();
+  const activeOrders = orders.filter(o => ['New', 'Accepted', 'Preparing', 'Ready for pickup', 'Picked up', 'On the way'].includes(o.status));
+  const revenue = orders.reduce((sum, order) => sum + order.total, 0);
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-dark">لوحة التحكم العامة</h1>
@@ -43,7 +47,7 @@ export default function Overview() {
             </span>
           </div>
           <p className="text-gray-500 text-sm mb-1">إجمالي الإيرادات (اليوم)</p>
-          <h3 className="text-2xl font-bold text-dark">142,500 ج.م</h3>
+          <h3 className="text-2xl font-bold text-dark">{revenue} ج.م</h3>
         </div>
 
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
@@ -53,7 +57,7 @@ export default function Overview() {
             </div>
           </div>
           <p className="text-gray-500 text-sm mb-1">الطلبات الحالية</p>
-          <h3 className="text-2xl font-bold text-dark">450</h3>
+          <h3 className="text-2xl font-bold text-dark">{activeOrders.length}</h3>
         </div>
       </div>
 
