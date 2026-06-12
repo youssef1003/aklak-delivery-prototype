@@ -1,0 +1,109 @@
+import { useNavigate } from 'react-router-dom';
+import { MapPin, Navigation, Clock, Banknote, User } from 'lucide-react';
+
+export default function AvailableOrders() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
+      <header className="bg-green-600 p-4 text-white flex items-center justify-between sticky top-0 z-10 shadow-md">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+            <User size={20} />
+          </div>
+          <div>
+            <p className="text-xs text-green-100">مرحباً كابتن</p>
+            <h1 className="font-bold">محمود السيد</h1>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-bold bg-white/20 px-2 py-1 rounded">متصل</span>
+          <div className="w-3 h-3 bg-green-300 rounded-full animate-pulse border-2 border-green-600"></div>
+        </div>
+      </header>
+
+      <div className="p-4 bg-white border-b border-gray-200 flex justify-between items-center shadow-sm">
+        <div className="text-center flex-1 border-l border-gray-100">
+          <p className="text-xs text-gray-500 mb-1">طلبات اليوم</p>
+          <p className="font-bold text-dark text-lg">12</p>
+        </div>
+        <div className="text-center flex-1">
+          <p className="text-xs text-gray-500 mb-1">أرباح اليوم</p>
+          <p className="font-bold text-green-600 text-lg">240 ج.م</p>
+        </div>
+      </div>
+
+      <main className="flex-1 p-4 space-y-4">
+        <h2 className="text-lg font-bold text-dark mb-2">الطلبات المتاحة حولك</h2>
+
+        {/* Order Card 1 */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-200">
+          <div className="flex justify-between items-start mb-4 pb-4 border-b border-gray-100">
+            <div>
+              <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-bold mb-2 inline-block">طلب جديد</span>
+              <p className="font-bold text-dark">#ORD-10985</p>
+            </div>
+            <div className="text-left">
+              <p className="font-bold text-green-600 text-xl">25 ج.م</p>
+              <p className="text-xs text-gray-500">أجرة التوصيل</p>
+            </div>
+          </div>
+
+          <div className="space-y-4 relative before:absolute before:right-3.5 before:top-4 before:bottom-4 before:w-0.5 before:bg-gray-200 mb-4">
+            <div className="flex gap-3 relative z-10">
+              <div className="w-7 h-7 bg-white border-2 border-green-500 rounded-full flex items-center justify-center shrink-0">
+                <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-0.5">استلام من</p>
+                <p className="font-bold text-dark text-sm">Heart Attack - المهندسين</p>
+                <p className="text-xs text-gray-500 flex items-center gap-1 mt-1"><Navigation size={12} /> 2.5 كم</p>
+              </div>
+            </div>
+            
+            <div className="flex gap-3 relative z-10">
+              <div className="w-7 h-7 bg-white border-2 border-red-500 rounded-full flex items-center justify-center shrink-0">
+                <MapPin size={14} className="text-red-500" />
+              </div>
+              <div>
+                <p className="text-xs text-gray-500 mb-0.5">تسليم إلى</p>
+                <p className="font-bold text-dark text-sm">شارع التحرير، الدقي</p>
+                <p className="text-xs text-gray-500 flex items-center gap-1 mt-1"><Navigation size={12} /> 4.2 كم الإجمالي</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button className="flex-1 bg-gray-100 text-gray-600 py-3 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors">
+              تجاهل
+            </button>
+            <button onClick={() => navigate('/driver/order/ORD-10985')} className="flex-[2] bg-green-600 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-green-600/30 hover:bg-green-700 transition-colors">
+              قبول الطلب
+            </button>
+          </div>
+        </div>
+
+      </main>
+
+      {/* Bottom Navigation */}
+      <nav className="bg-white border-t border-gray-200 fixed bottom-0 w-full max-w-md px-6 py-3 flex justify-between items-center z-20 pb-safe">
+        <button className="flex flex-col items-center gap-1 text-green-600">
+          <Navigation size={24} className="fill-green-600/20" />
+          <span className="text-[10px] font-medium">الطلبات</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-gray-400">
+          <Clock size={24} />
+          <span className="text-[10px] font-medium">السجل</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-gray-400">
+          <Banknote size={24} />
+          <span className="text-[10px] font-medium">الأرباح</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-gray-400">
+          <User size={24} />
+          <span className="text-[10px] font-medium">حسابي</span>
+        </button>
+      </nav>
+    </div>
+  );
+}
