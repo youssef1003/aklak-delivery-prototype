@@ -19,6 +19,10 @@ export const DemoProvider = ({ children }) => {
   const [orders, setOrders] = useState(() => loadState('orders', []));
   const [location, setLocation] = useState(() => loadState('location', { country: 'SA', city: 'Riyadh' }));
   const [promoCode, setPromoCode] = useState(() => loadState('promoCode', null));
+  
+  // Sprint 2 additions
+  const [user, setUser] = useState(() => loadState('user', { name: 'أحمد محمد', phone: '+20 123 456 7890', points: 0 }));
+  const [favorites, setFavorites] = useState(() => loadState('favorites', { restaurants: [], meals: [] }));
 
   // Save to localStorage when state changes
   useEffect(() => {
@@ -36,6 +40,14 @@ export const DemoProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('aklak_demo_promoCode', JSON.stringify(promoCode));
   }, [promoCode]);
+
+  useEffect(() => {
+    localStorage.setItem('aklak_demo_user', JSON.stringify(user));
+  }, [user]);
+
+  useEffect(() => {
+    localStorage.setItem('aklak_demo_favorites', JSON.stringify(favorites));
+  }, [favorites]);
 
   // Cart Functions
   const addToCart = (product, restaurant, quantity = 1) => {
@@ -109,12 +121,57 @@ export const DemoProvider = ({ children }) => {
   };
 
   const updateOrderStatus = (orderId, newStatus) => {
-    setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+    setOrders(prev => {
+      let pointsToAward = 0;
+      
+      const newOrders = prev.map(o => {
+        if (o.id === orderId) {
+          const updatedOrder = { ...o, status: newStatus };
+          
+          // Award points if delivered and not already awarded
+          if (newStatus === 'Delivered' && !o.pointsAwarded) {
+            updatedOrder.pointsAwarded = true;
+            pointsToAward = Math.floor(o.total / 10); // 1 point per 10 currency units
+          }
+          
+          return updatedOrder;
+        }
+        return o;
+      });
+
+      if (pointsToAward > 0) {
+        setUser(u => ({ ...u, points: (u.points || 0) + pointsToAward }));
+      }
+
+      return newOrders;
+    });
+  };
+
+  // Favorites Functions
+  const toggleFavorite = (id, type = 'restaurants') => { // type can be 'restaurants' or 'meals'
+    setFavorites(prev => {
+      const list = prev[type] || [];
+      if (list.includes(id)) {
+        return { ...prev, [type]: list.filter(itemId => itemId !== id) };
+      } else {
+        return { ...prev, [type]: [...list, id] };
+      }
+    });
   };
 
   const getCustomerOrders = () => orders;
   const getRestaurantOrders = (restaurantId) => orders.filter(o => o.restaurantId === restaurantId);
   const getDriverAvailableOrders = () => orders.filter(o => o.status === 'Ready');
+
+  const resetDemoData = () => {
+    localStorage.removeItem('aklak_demo_cart');
+    localStorage.removeItem('aklak_demo_orders');
+    localStorage.removeItem('aklak_demo_location');
+    localStorage.removeItem('aklak_demo_promoCode');
+    localStorage.removeItem('aklak_demo_user');
+    localStorage.removeItem('aklak_demo_favorites');
+    window.location.href = '/';
+  };
 
   return (
     <DemoContext.Provider value={{
@@ -122,6 +179,8 @@ export const DemoProvider = ({ children }) => {
       orders,
       location,
       promoCode,
+      user,
+      favorites,
       setLocation,
       addToCart,
       updateCartQuantity,
@@ -130,9 +189,11 @@ export const DemoProvider = ({ children }) => {
       clearPromoCode,
       placeOrder,
       updateOrderStatus,
+      toggleFavorite,
       getCustomerOrders,
       getRestaurantOrders,
-      getDriverAvailableOrders
+      getDriverAvailableOrders,
+      resetDemoData
     }}>
       {children}
     </DemoContext.Provider>
