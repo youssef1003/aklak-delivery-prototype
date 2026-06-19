@@ -68,3 +68,12 @@ If you wish to test the read-only Supabase pilot locally, follow these steps exa
    VITE_SUPABASE_ANON_KEY=real_anon_key_here
    ```
 6. **Production Fallback**: Keep Vercel production on `localStorage` until the pilot is approved. **Never** commit the `.env` or `.env.local` files to Git.
+
+## 10. Sprint 4C: Real Supabase Auth Mode
+A new environment variable has been introduced to control the authentication flow independently from the data source:
+`VITE_AUTH_MODE=demo | supabase | hybrid`
+
+- **Why demo is default:** To ensure the core investor demonstration remains fully functional out-of-the-box without requiring database setup or real credentials.
+- **How to enable locally:** Once real Auth is implemented in later phases, you can add `VITE_AUTH_MODE=supabase` to your local `.env.local`.
+- **Production Status:** Production explicitly remains on `demo` mode until the real auth flow passes full QA.
+- **Rollback Strategy:** If real auth causes issues, simply remove `VITE_AUTH_MODE` or set it to `demo`. You can also fallback to the `sprint-4b-stable` Git tag.

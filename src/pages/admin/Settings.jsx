@@ -122,11 +122,23 @@ export default function Settings() {
                 <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">وضع الديمو (Context)</p>
                 <p className="font-bold text-success flex items-center gap-1">نشط <CheckCircle2 size={14} /></p>
               </div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">وضع المصادقة (AUTH_MODE)</p>
+                <p className="font-bold text-gray-900">{import.meta.env.VITE_AUTH_MODE || 'demo'}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">حالة مصادقة Supabase</p>
+                <p className="font-bold text-gray-900">
+                  {import.meta.env.VITE_AUTH_MODE === 'supabase' || import.meta.env.VITE_AUTH_MODE === 'hybrid'
+                    ? 'قيد الانتظار (Pending)' 
+                    : 'غير مفعلة (Disabled)'}
+                </p>
+              </div>
             </div>
             
             <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl flex gap-3 text-blue-800 text-sm">
               <Info size={20} className="shrink-0" />
-              <p>يتم حالياً الانتقال التدريجي نحو Supabase. واجهة العميل والمطعم والمندوب تعمل على الـ LocalStorage الافتراضي لضمان استقرار العرض التجريبي.</p>
+              <p>وضع المصادقة الحالي هو `demo`. لا يزال بإمكانك تسجيل الدخول بالحسابات التجريبية دون الحاجة إلى قاعدة بيانات حقيقية.</p>
             </div>
 
             {/* Diagnostic Test Panel */}
