@@ -56,16 +56,28 @@ class AuthService {
     const authState = {
       isAuthenticated: true,
       currentUser: user,
-      currentRole: user.role
+      currentRole: user.role,
+      provider: 'demo'
     };
 
     storageAdapter.setState({ auth: authState });
     return { success: true, user };
   }
 
+  // Used by the local Supabase Pilot to inject real user state
+  supabaseLoginSuccess(user, role) {
+    const authState = {
+      isAuthenticated: true,
+      currentUser: { ...user, role: role || 'customer' },
+      currentRole: role || 'customer',
+      provider: 'supabase'
+    };
+    storageAdapter.setState({ auth: authState });
+  }
+
   logout() {
     storageAdapter.setState({
-      auth: { isAuthenticated: false, currentUser: null, currentRole: null }
+      auth: { isAuthenticated: false, currentUser: null, currentRole: null, provider: null }
     });
   }
 }

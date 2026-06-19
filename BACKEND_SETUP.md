@@ -77,3 +77,14 @@ A new environment variable has been introduced to control the authentication flo
 - **How to enable locally:** Once real Auth is implemented in later phases, you can add `VITE_AUTH_MODE=supabase` to your local `.env.local`.
 - **Production Status:** Production explicitly remains on `demo` mode until the real auth flow passes full QA.
 - **Rollback Strategy:** If real auth causes issues, simply remove `VITE_AUTH_MODE` or set it to `demo`. You can also fallback to the `sprint-4b-stable` Git tag.
+
+## 11. Sprint 4C-3: Local Supabase Auth Pilot
+To test the real Supabase Auth locally without affecting the Demo Auth, configure your `.env.local` as follows:
+```
+VITE_DATA_SOURCE=localStorage
+VITE_AUTH_MODE=hybrid
+VITE_SUPABASE_URL=real_local_project_url
+VITE_SUPABASE_ANON_KEY=real_local_anon_key
+```
+This enables the "Real Supabase Login" section on the login page alongside the standard Demo login. 
+**Important**: Vercel production remains strictly on `demo` mode. Never commit these keys to Git.

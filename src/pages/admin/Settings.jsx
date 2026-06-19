@@ -130,8 +130,14 @@ export default function Settings() {
                 <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">حالة مصادقة Supabase</p>
                 <p className="font-bold text-gray-900">
                   {import.meta.env.VITE_AUTH_MODE === 'supabase' || import.meta.env.VITE_AUTH_MODE === 'hybrid'
-                    ? 'قيد الانتظار (Pending)' 
+                    ? 'نشطة للعملاء (Active Pilot)' 
                     : 'غير مفعلة (Disabled)'}
+                </p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 md:col-span-4">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">المزود الحالي (Current Provider)</p>
+                <p className="font-bold text-gray-900 flex gap-2">
+                  <span>مزود الجلسة: <span className="text-primary">{JSON.parse(localStorage.getItem('aklak-state-v2'))?.auth?.provider || 'demo'}</span></span>
                 </p>
               </div>
             </div>

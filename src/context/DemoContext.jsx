@@ -34,7 +34,18 @@ export const DemoProvider = ({ children }) => {
     restaurantMenu: appState.restaurantMenu || [],
 
     login: (email, password) => authService.login(email, password),
-    logout: () => authService.logout(),
+    supabaseLoginSuccess: (user, role) => authService.supabaseLoginSuccess(user, role),
+    logout: async () => {
+      if (appState.auth?.provider === 'supabase') {
+        try {
+          const { supabaseAuthService } = await import('../services/auth/supabaseAuthService');
+          await supabaseAuthService.signOut();
+        } catch (e) {
+          console.error('Supabase signout failed', e);
+        }
+      }
+      authService.logout();
+    },
 
     setLocation: (newLoc) => userService.setLocation(newLoc),
     
