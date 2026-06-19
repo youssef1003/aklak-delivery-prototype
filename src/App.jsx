@@ -30,15 +30,28 @@ import Profile from './pages/customer/Profile';
 import RestOverview from './pages/restaurant/Overview';
 import RestOrders from './pages/restaurant/Orders';
 import RestMenu from './pages/restaurant/Menu';
+import RestOffers from './pages/restaurant/Offers';
+import RestSettings from './pages/restaurant/Settings';
+import RestStaff from './pages/restaurant/Staff';
+import RestPayouts from './pages/restaurant/Payouts';
 
 // Admin Pages
 import AdminOverview from './pages/admin/Overview';
 import AdminRestaurants from './pages/admin/Restaurants';
+import AdminDrivers from './pages/admin/Drivers';
+import AdminCustomers from './pages/admin/Customers';
+import AdminOrders from './pages/admin/Orders';
+import AdminSupport from './pages/admin/Support';
+import AdminSettings from './pages/admin/Settings';
+import AdminFinance from './pages/admin/Finance';
 
 // Driver Pages
 import DriverLogin from './pages/driver/Login';
 import AvailableOrders from './pages/driver/AvailableOrders';
 import DriverOrderDetails from './pages/driver/OrderDetails';
+import DriverEarnings from './pages/driver/Earnings';
+import DriverHistory from './pages/driver/History';
+import DriverProfile from './pages/driver/Profile';
 
 function App() {
   return (
@@ -77,6 +90,9 @@ function App() {
             <Route index element={<AvailableOrders />} />
             <Route path="orders" element={<AvailableOrders />} />
             <Route path="order/:id" element={<DriverOrderDetails />} />
+            <Route path="earnings" element={<DriverEarnings />} />
+            <Route path="history" element={<DriverHistory />} />
+            <Route path="profile" element={<DriverProfile />} />
             <Route path="*" element={<PlaceholderPage title="صفحة المندوب" module="تطبيق المندوب" />} />
           </Route>
 
@@ -89,6 +105,10 @@ function App() {
             <Route index element={<RestOverview />} />
             <Route path="orders" element={<RestOrders />} />
             <Route path="menu" element={<RestMenu />} />
+            <Route path="offers" element={<RestOffers />} />
+            <Route path="settings" element={<RestSettings />} />
+            <Route path="staff" element={<RestStaff />} />
+            <Route path="payouts" element={<RestPayouts />} />
             <Route path="*" element={<PlaceholderPage title="صفحة تحت الإنشاء" module="لوحة تحكم المطعم" />} />
           </Route>
 
@@ -100,6 +120,12 @@ function App() {
           }>
             <Route index element={<AdminOverview />} />
             <Route path="restaurants" element={<AdminRestaurants />} />
+            <Route path="drivers" element={<AdminDrivers />} />
+            <Route path="customers" element={<AdminCustomers />} />
+            <Route path="orders" element={<AdminOrders />} />
+            <Route path="support" element={<AdminSupport />} />
+            <Route path="settings" element={<AdminSettings />} />
+            <Route path="finance" element={<AdminFinance />} />
             <Route path="audit" element={<ProductionGapAudit />} />
             <Route path="*" element={<PlaceholderPage title="صفحة تحت الإنشاء" module="لوحة تحكم الإدارة" />} />
           </Route>

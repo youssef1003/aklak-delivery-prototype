@@ -1,26 +1,44 @@
 import { useState } from 'react';
-import { Search, Filter, Plus, MoreVertical, Star } from 'lucide-react';
-import { MOCK_RESTAURANTS } from '../../data/mockData';
+import { Search, Filter, Store, CheckCircle, XCircle } from 'lucide-react';
+import SectionHeader from '../../components/shared/SectionHeader';
+import StatusBadge from '../../components/shared/StatusBadge';
 
 export default function Restaurants() {
+  const [restaurants, setRestaurants] = useState([
+    { id: 'R001', name: 'برجر كينج', owner: 'أحمد محمود', phone: '01012345678', branches: 3, status: 'active', commission: '15%' },
+    { id: 'R002', name: 'بيتزا هت', owner: 'محمد علي', phone: '01123456789', branches: 5, status: 'active', commission: '15%' },
+    { id: 'R003', name: 'شاورما الريم', owner: 'سعيد حسن', phone: '01234567890', branches: 1, status: 'pending', commission: '12%' },
+    { id: 'R004', name: 'كشري التحرير', owner: 'محمود سعد', phone: '01534567890', branches: 8, status: 'suspended', commission: '10%' },
+  ]);
+
+  const toggleStatus = (id, currentStatus) => {
+    setRestaurants(restaurants.map(r => {
+      if (r.id === id) {
+        return { ...r, status: currentStatus === 'active' ? 'suspended' : 'active' };
+      }
+      return r;
+    }));
+  };
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-dark">إدارة المطاعم</h1>
-        
-        <div className="flex items-center gap-3">
-          <div className="relative">
-            <input 
-              type="text" 
-              placeholder="ابحث عن مطعم..." 
-              className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none"
-            />
-            <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
-          </div>
-          <button className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm shadow-primary/30 hover:bg-primary/90 transition-colors">
-            <Plus size={16} /> إضافة مطعم
-          </button>
+      <SectionHeader 
+        title="إدارة المطاعم" 
+        subtitle="مراجعة واعتماد المطاعم الجديدة وإدارة حساباتهم"
+      />
+
+      <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+        <div className="relative flex-1 max-w-md">
+          <input 
+            type="text" 
+            placeholder="ابحث عن مطعم، رقم هاتف، أو مالك..." 
+            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:border-primary focus:ring-1 focus:ring-primary outline-none"
+          />
+          <Search size={16} className="absolute left-3 top-2.5 text-gray-400" />
         </div>
+        <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 bg-white">
+          <Filter size={16} /> تصفية بالحالة
+        </button>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

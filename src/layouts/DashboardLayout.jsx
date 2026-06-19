@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, ShoppingBag, Utensils, Tag, BarChart3, Settings, Users, LogOut, Globe, MapPin, Truck, Ticket, LifeBuoy } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Utensils, Tag, Settings, Users, LogOut, MapPin, Truck, Ticket, LifeBuoy, DollarSign } from 'lucide-react';
 import DemoBadge from '../components/DemoBadge';
 import { useDemo } from '../context/DemoContext';
 
@@ -13,20 +13,20 @@ export default function DashboardLayout({ type }) {
     { name: 'الطلبات', path: '/restaurant-dashboard/orders', icon: <ShoppingBag size={20} /> },
     { name: 'المنيو', path: '/restaurant-dashboard/menu', icon: <Utensils size={20} /> },
     { name: 'العروض', path: '/restaurant-dashboard/offers', icon: <Tag size={20} /> },
-    { name: 'التقارير', path: '/restaurant-dashboard/reports', icon: <BarChart3 size={20} /> },
+    { name: 'الموظفين', path: '/restaurant-dashboard/staff', icon: <Users size={20} /> },
+    { name: 'الأرباح', path: '/restaurant-dashboard/payouts', icon: <DollarSign size={20} /> },
     { name: 'الإعدادات', path: '/restaurant-dashboard/settings', icon: <Settings size={20} /> },
   ];
 
   const adminLinks = [
     { name: 'لوحة التحكم', path: '/admin-dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'الدول والمدن', path: '/admin-dashboard/locations', icon: <Globe size={20} /> },
     { name: 'المطاعم', path: '/admin-dashboard/restaurants', icon: <Utensils size={20} /> },
     { name: 'الطلبات', path: '/admin-dashboard/orders', icon: <ShoppingBag size={20} /> },
     { name: 'المناديب', path: '/admin-dashboard/drivers', icon: <Truck size={20} /> },
     { name: 'العملاء', path: '/admin-dashboard/customers', icon: <Users size={20} /> },
-    { name: 'الكوبونات', path: '/admin-dashboard/coupons', icon: <Ticket size={20} /> },
-    { name: 'إعدادات العمولة', path: '/admin-dashboard/commission', icon: <Settings size={20} /> },
-    { name: 'تذاكر الدعم', path: '/admin-dashboard/support', icon: <LifeBuoy size={20} /> },
+    { name: 'المالية', path: '/admin-dashboard/finance', icon: <DollarSign size={20} /> },
+    { name: 'الدعم الفني', path: '/admin-dashboard/support', icon: <LifeBuoy size={20} /> },
+    { name: 'الإعدادات', path: '/admin-dashboard/settings', icon: <Settings size={20} /> },
   ];
 
   const links = type === 'admin' ? adminLinks : restaurantLinks;

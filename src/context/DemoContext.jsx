@@ -28,6 +28,10 @@ export const DemoProvider = ({ children }) => {
     promoCode: appState.promoCode,
     user: appState.user,
     favorites: appState.favorites,
+    adminData: appState.adminData || { restaurantsQueue: [], supportTickets: [], systemSettings: {} },
+    driverProfile: appState.driverProfile || { isOnline: false, earningsHistory: [] },
+    restaurantSettings: appState.restaurantSettings || { isOpen: true, preparationTime: 15 },
+    restaurantMenu: appState.restaurantMenu || [],
 
     login: (email, password) => authService.login(email, password),
     logout: () => authService.logout(),

@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Navigation, Clock, Banknote, User, CheckCircle2, ChevronRight } from 'lucide-react';
+import { MapPin, Navigation, Clock, CheckCircle2, ChevronRight } from 'lucide-react';
 import { useDemo } from '../../context/DemoContext';
+import DriverBottomNav from '../../components/shared/DriverBottomNav';
 
 export default function AvailableOrders() {
   const navigate = useNavigate();
@@ -129,33 +130,7 @@ export default function AvailableOrders() {
         )}
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="bg-white border-t border-gray-100 fixed bottom-0 w-full max-w-md px-6 py-4 flex justify-between items-center z-30 pb-safe shadow-[0_-15px_30px_rgba(0,0,0,0.04)]">
-        <button className="flex flex-col items-center gap-1.5 text-dark transition-colors">
-          <div className="p-1.5 bg-gray-100 rounded-xl">
-            <Navigation size={22} className="fill-dark/20" />
-          </div>
-          <span className="text-[10px] font-bold">الطلبات</span>
-        </button>
-        <button className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-gray-600 transition-colors">
-          <div className="p-1.5 rounded-xl">
-            <Clock size={22} />
-          </div>
-          <span className="text-[10px] font-bold">السجل</span>
-        </button>
-        <button className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-gray-600 transition-colors">
-          <div className="p-1.5 rounded-xl">
-            <Banknote size={22} />
-          </div>
-          <span className="text-[10px] font-bold">الأرباح</span>
-        </button>
-        <button className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-gray-600 transition-colors">
-          <div className="p-1.5 rounded-xl">
-            <User size={22} />
-          </div>
-          <span className="text-[10px] font-bold">حسابي</span>
-        </button>
-      </nav>
+      <DriverBottomNav />
     </div>
   );
 }

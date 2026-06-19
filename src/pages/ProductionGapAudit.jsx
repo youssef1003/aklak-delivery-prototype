@@ -38,28 +38,28 @@ const ProductionGapAudit = () => {
   ];
 
   const driverAudit = [
-    { name: 'Go Online/Offline', desc: 'Toggle availability status', status: 'pending' },
-    { name: 'Available Orders Map', desc: 'Show orders near the driver', status: 'pending' },
+    { name: 'Go Online/Offline', desc: 'Toggle availability status', status: 'done' },
+    { name: 'Available Orders Map', desc: 'Show orders near the driver', status: 'warning' },
     { name: 'Active Delivery Steps', desc: 'Navigate to restaurant -> Navigate to customer', status: 'warning' },
-    { name: 'Earnings Summary', desc: 'Weekly/Daily earnings breakdown', status: 'pending' },
-    { name: 'Driver Profile', desc: 'Vehicle details, ratings', status: 'pending' }
+    { name: 'Earnings Summary', desc: 'Weekly/Daily earnings breakdown', status: 'done' },
+    { name: 'Driver Profile', desc: 'Vehicle details, ratings', status: 'done' }
   ];
 
   const restaurantAudit = [
     { name: 'Live Incoming Orders', desc: 'Push notifications and sound alerts', status: 'warning' },
-    { name: 'Menu Management', desc: 'Enable/disable items based on stock', status: 'pending' },
-    { name: 'Branch Status', desc: 'Open/close branch manually', status: 'pending' },
-    { name: 'Promotional Offers', desc: 'Create and manage discount codes', status: 'pending' },
-    { name: 'Daily Reports', desc: 'Sales and popular items', status: 'pending' },
-    { name: 'Staff Management', desc: 'Add/remove branch staff', status: 'pending' }
+    { name: 'Menu Management', desc: 'Enable/disable items based on stock', status: 'done' },
+    { name: 'Branch Status', desc: 'Open/close branch manually', status: 'done' },
+    { name: 'Promotional Offers', desc: 'Create and manage discount codes', status: 'done' },
+    { name: 'Daily Reports', desc: 'Sales and popular items', status: 'done' },
+    { name: 'Staff Management', desc: 'Add/remove branch staff', status: 'done' }
   ];
 
   const adminAudit = [
-    { name: 'Restaurant Approval', desc: 'Approve new restaurant registrations', status: 'pending' },
-    { name: 'Suspensions', desc: 'Suspend customers or drivers', status: 'pending' },
-    { name: 'System Monitoring', desc: 'View all active orders globally', status: 'pending' },
-    { name: 'Support Tickets', desc: 'Handle customer complaints', status: 'pending' },
-    { name: 'System Settings', desc: 'Global commission rates and cities', status: 'pending' }
+    { name: 'Restaurant Approval', desc: 'Approve new restaurant registrations', status: 'done' },
+    { name: 'Suspensions', desc: 'Suspend customers or drivers', status: 'done' },
+    { name: 'System Monitoring', desc: 'View all active orders globally', status: 'done' },
+    { name: 'Support Tickets', desc: 'Handle customer complaints', status: 'done' },
+    { name: 'System Settings', desc: 'Global commission rates and cities', status: 'done' }
   ];
 
   return (
