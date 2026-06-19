@@ -8,8 +8,11 @@ import PlaceholderPage from './components/PlaceholderPage';
 // Context
 import { DemoProvider } from './context/DemoContext';
 
-// Main Portal
+// Main Portal & Auth
 import PortalHome from './pages/Home';
+import Login from './pages/Login';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import ProductionGapAudit from './pages/ProductionGapAudit';
 
 // Customer Pages
 import Splash from './pages/customer/Splash';
@@ -44,9 +47,14 @@ function App() {
         <Routes>
           {/* Main Entry */}
           <Route path="/" element={<PortalHome />} />
+          <Route path="/login" element={<Login />} />
 
           {/* Customer App (Mobile Layout) */}
-          <Route path="/customer" element={<MobileLayout />}>
+          <Route path="/customer" element={
+            <ProtectedRoute allowedRole="customer">
+              <MobileLayout />
+            </ProtectedRoute>
+          }>
             <Route index element={<Splash />} />
             <Route path="login" element={<CustomerLogin />} />
             <Route path="location" element={<CountryCity />} />
@@ -61,26 +69,38 @@ function App() {
           </Route>
 
           {/* Driver App (Mobile Layout) */}
-          <Route path="/driver" element={<MobileLayout />}>
-            <Route index element={<DriverLogin />} />
+          <Route path="/driver" element={
+            <ProtectedRoute allowedRole="driver">
+              <MobileLayout />
+            </ProtectedRoute>
+          }>
+            <Route index element={<AvailableOrders />} />
             <Route path="orders" element={<AvailableOrders />} />
             <Route path="order/:id" element={<DriverOrderDetails />} />
             <Route path="*" element={<PlaceholderPage title="صفحة المندوب" module="تطبيق المندوب" />} />
           </Route>
 
           {/* Restaurant Dashboard */}
-          <Route path="/restaurant-dashboard" element={<DashboardLayout type="restaurant" />}>
+          <Route path="/restaurant-dashboard" element={
+            <ProtectedRoute allowedRole="restaurant">
+              <DashboardLayout type="restaurant" />
+            </ProtectedRoute>
+          }>
             <Route index element={<RestOverview />} />
             <Route path="orders" element={<RestOrders />} />
             <Route path="menu" element={<RestMenu />} />
-            {/* Placeholders for other dashboard routes */}
             <Route path="*" element={<PlaceholderPage title="صفحة تحت الإنشاء" module="لوحة تحكم المطعم" />} />
           </Route>
 
           {/* Admin Dashboard */}
-          <Route path="/admin-dashboard" element={<DashboardLayout type="admin" />}>
+          <Route path="/admin-dashboard" element={
+            <ProtectedRoute allowedRole="admin">
+              <DashboardLayout type="admin" />
+            </ProtectedRoute>
+          }>
             <Route index element={<AdminOverview />} />
             <Route path="restaurants" element={<AdminRestaurants />} />
+            <Route path="audit" element={<ProductionGapAudit />} />
             <Route path="*" element={<PlaceholderPage title="صفحة تحت الإنشاء" module="لوحة تحكم الإدارة" />} />
           </Route>
 

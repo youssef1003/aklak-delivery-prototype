@@ -1,7 +1,17 @@
 import React, { useState } from 'react';
+import { useDemo } from '../context/DemoContext';
+import { useNavigate } from 'react-router-dom';
 
 const DemoBadge = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { auth, logout } = useDemo();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false);
+    navigate('/');
+  };
 
   return (
     <>
@@ -41,6 +51,22 @@ const DemoBadge = () => {
                 الطلبات وهمية ولا يتم إرسالها لأي مطعم حقيقي.
               </li>
             </ul>
+
+            {auth?.isAuthenticated && (
+              <div className="mt-6 pt-4 border-t">
+                <p className="text-sm font-bold text-gray-700 mb-2">تسجيل الدخول الحالي:</p>
+                <div className="flex justify-between items-center bg-gray-50 p-2 rounded-lg">
+                  <span className="text-sm text-gray-600 truncate">{auth.currentUser.name} ({auth.currentRole})</span>
+                  <button 
+                    onClick={handleLogout}
+                    className="text-red-500 text-sm font-bold hover:text-red-700"
+                  >
+                    خروج
+                  </button>
+                </div>
+              </div>
+            )}
+
             <button 
               onClick={() => setIsOpen(false)}
               className="mt-6 w-full bg-gray-900 text-white py-2 rounded-lg font-medium hover:bg-gray-800 transition-colors"

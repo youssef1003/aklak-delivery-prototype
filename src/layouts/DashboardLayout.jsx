@@ -1,9 +1,12 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, ShoppingBag, Utensils, Tag, BarChart3, Settings, Users, LogOut, Globe, MapPin, Truck, Ticket, LifeBuoy } from 'lucide-react';
 import DemoBadge from '../components/DemoBadge';
+import { useDemo } from '../context/DemoContext';
 
 export default function DashboardLayout({ type }) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout, auth } = useDemo();
 
   const restaurantLinks = [
     { name: 'الرئيسية', path: '/restaurant-dashboard', icon: <LayoutDashboard size={20} /> },
@@ -57,10 +60,16 @@ export default function DashboardLayout({ type }) {
           </ul>
         </nav>
         <div className="p-4 border-t border-gray-200">
-          <Link to="/" className="flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+          <button 
+            onClick={() => {
+              logout();
+              navigate('/');
+            }} 
+            className="w-full flex items-center gap-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          >
             <LogOut size={20} />
             <span>تسجيل الخروج</span>
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -71,8 +80,11 @@ export default function DashboardLayout({ type }) {
             <h1 className="text-lg font-bold text-primary">{title}</h1>
           </div>
           <div className="flex items-center gap-4">
+            <span className="text-sm font-medium text-gray-700 hidden sm:block">
+              {auth?.currentUser?.name || 'مستخدم ديمو'}
+            </span>
             <div className="w-8 h-8 rounded-full bg-gray-200 overflow-hidden">
-              <img src="https://ui-avatars.com/api/?name=User&background=random" alt="User" className="w-full h-full object-cover" />
+              <img src={`https://ui-avatars.com/api/?name=${auth?.currentUser?.name || 'User'}&background=random`} alt="User" className="w-full h-full object-cover" />
             </div>
           </div>
         </header>

@@ -10,6 +10,7 @@ export const migrateStateIfNeeded = (state) => {
       promoCode: null,
       user: { name: 'أحمد محمد', phone: '+20 123 456 7890', points: 0 },
       favorites: { restaurants: [], meals: [] },
+      auth: { isAuthenticated: false, currentUser: null, currentRole: null },
       _version: APP_CONFIG.SCHEMA_VERSION
     };
   }
@@ -26,6 +27,7 @@ export const migrateStateIfNeeded = (state) => {
     migratedState.promoCode = migratedState.promoCode || null;
     migratedState.user = migratedState.user || { name: 'أحمد محمد', phone: '+20 123 456 7890', points: 0 };
     migratedState.favorites = migratedState.favorites || { restaurants: [], meals: [] };
+    migratedState.auth = migratedState.auth || { isAuthenticated: false, currentUser: null, currentRole: null };
 
     // Migrate orders to ensure required fields
     if (Array.isArray(migratedState.orders)) {

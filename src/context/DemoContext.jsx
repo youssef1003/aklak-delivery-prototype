@@ -3,6 +3,7 @@ import { storageAdapter } from '../services/adapters/localStorageAdapter';
 import { cartService } from '../services/cartService';
 import { orderService } from '../services/orderService';
 import { userService } from '../services/userService';
+import { authService } from '../services/authService';
 
 const DemoContext = createContext();
 
@@ -20,12 +21,16 @@ export const DemoProvider = ({ children }) => {
 
   // Expose exactly the same interface as before, but mapped to services
   const contextValue = {
+    auth: appState.auth || { isAuthenticated: false, currentUser: null, currentRole: null },
     cart: appState.cart,
     orders: appState.orders,
     location: appState.location,
     promoCode: appState.promoCode,
     user: appState.user,
     favorites: appState.favorites,
+
+    login: (email, password) => authService.login(email, password),
+    logout: () => authService.logout(),
 
     setLocation: (newLoc) => userService.setLocation(newLoc),
     
