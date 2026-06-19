@@ -1,5 +1,7 @@
 # Sprint 3B: Supabase Backend Integration Plan
 
+> **Note:** Sprint 3B-1 only creates the initial schema, policies, and documentation. The frontend is **not yet connected**, and the app continues to run safely on the localStorage adapter.
+
 ## 1. Supabase Project Setup
 To prepare for the backend transition without breaking the current localStorage setup, we will configure Supabase carefully.
 **Manual Setup Required:**
