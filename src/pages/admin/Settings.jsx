@@ -128,7 +128,49 @@ export default function Settings() {
               <Info size={20} className="shrink-0" />
               <p>يتم حالياً الانتقال التدريجي نحو Supabase. واجهة العميل والمطعم والمندوب تعمل على الـ LocalStorage الافتراضي لضمان استقرار العرض التجريبي.</p>
             </div>
+
+            {/* Diagnostic Test Panel */}
+            <div className="bg-gray-50 border border-gray-200 p-4 rounded-xl">
+              <div className="flex justify-between items-center mb-3">
+                <p className="font-bold text-gray-800 text-sm">اختبار الاتصال بالقراءة فقط (Read-Only Pilot)</p>
+                <button 
+                  onClick={async () => {
+                    setSettings(s => ({...s, testLoading: true, testResult: null}));
+                    try {
+                      const { supabaseAdapter } = await import('../../services/adapters/supabaseAdapter');
+                      const restaurants = await supabaseAdapter.getRestaurants();
+                      const items = await supabaseAdapter.getMenuItems();
+                      setSettings(s => ({
+                        ...s, 
+                        testLoading: false, 
+                        testResult: `نجاح! تم جلب ${restaurants.length} مطعم و ${items.length} صنف من Supabase.`
+                      }));
+                    } catch (err) {
+                      setSettings(s => ({
+                        ...s, 
+                        testLoading: false, 
+                        testResult: 'فشل الاتصال: يرجى التأكد من المفاتيح.'
+                      }));
+                    }
+                  }}
+                  disabled={settings.testLoading || import.meta.env.VITE_DATA_SOURCE !== 'supabase'}
+                  className="px-4 py-1.5 bg-gray-800 text-white text-xs rounded shadow hover:bg-gray-700 disabled:opacity-50"
+                >
+                  {settings.testLoading ? 'جاري الفحص...' : 'بدء الفحص السريع'}
+                </button>
+              </div>
+              {settings.testResult && (
+                <div className="p-3 bg-white border border-gray-200 rounded text-sm text-gray-700 font-medium">
+                  {settings.testResult}
+                </div>
+              )}
+              {import.meta.env.VITE_DATA_SOURCE !== 'supabase' && !settings.testResult && (
+                <p className="text-xs text-gray-500">يتطلب الفحص تغيير VITE_DATA_SOURCE إلى supabase أولاً.</p>
+              )}
+            </div>
+
           </div>
+
           
         </div>
 

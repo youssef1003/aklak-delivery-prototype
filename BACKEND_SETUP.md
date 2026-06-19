@@ -53,3 +53,18 @@ We have introduced an `adapterSelector.js` in `src/services/adapters/`. It check
 
 ### Rollback
 To rollback to pure localStorage demo mode at any time, simply delete the `.env.local` file or explicitly set `VITE_DATA_SOURCE=localStorage`.
+
+## 9. Sprint 4B: Supabase Read-Only Pilot Checklist
+If you wish to test the read-only Supabase pilot locally, follow these steps exactly:
+
+1. **Create Supabase Project Manually**: Log into Supabase and create a new project.
+2. **Run Existing SQL Migrations**: Open the Supabase SQL Editor and run `001_initial_schema.sql`, `002_rls_policies.sql`, and `003_seed_demo_data.sql`.
+3. **Confirm Tables Exist**: Ensure tables like `countries`, `cities`, `restaurants`, `restaurant_branches`, `menu_categories`, and `menu_items` exist.
+4. **Confirm Demo Seed Data Exists**: Verify the tables have data.
+5. **Configure Local Env Variables**: Create a `.env.local` file (this is strictly local and `.gitignore`d). Add:
+   ```
+   VITE_DATA_SOURCE=supabase
+   VITE_SUPABASE_URL=real_url_here
+   VITE_SUPABASE_ANON_KEY=real_anon_key_here
+   ```
+6. **Production Fallback**: Keep Vercel production on `localStorage` until the pilot is approved. **Never** commit the `.env` or `.env.local` files to Git.
