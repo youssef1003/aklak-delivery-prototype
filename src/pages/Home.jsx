@@ -18,12 +18,12 @@ export default function Home() {
             مرحباً بك في <span className="text-primary">أكلك Aklak</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            المنصة الأحدث لتوصيل الطعام. تم ترقية هذه النسخة (Sprint 1) لتدعم <strong>إدارة حالة محلية (Local State)</strong> متقدمة تحاكي دورة حياة الطلب بالكامل بين العميل، المطعم، والمندوب.
+            المنصة الأحدث لتوصيل الطعام. منصة متكاملة ومتعددة الأدوار (Multi-role Food Delivery Platform) تدعم دورة حياة الطلب بالكامل بين العميل، المطعم، والمندوب والإدارة.
           </p>
           
           <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/customer" className="bg-primary text-white px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30">
-              ابدأ تجربة الطلب (العميل)
+            <Link to="/showcase" className="bg-primary text-white px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-primary/90 transition-colors shadow-lg shadow-primary/30">
+              العرض التقديمي (Showcase)
             </Link>
             <a href="#prototypes" className="bg-white text-dark border border-gray-200 px-8 py-3.5 rounded-xl font-bold text-lg hover:bg-gray-50 transition-colors">
               تصفح كل الواجهات

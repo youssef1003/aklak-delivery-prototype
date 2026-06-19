@@ -11,6 +11,7 @@ import { DemoProvider } from './context/DemoContext';
 // Main Portal & Auth
 import PortalHome from './pages/Home';
 import Login from './pages/Login';
+import Showcase from './pages/Showcase';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import ProductionGapAudit from './pages/ProductionGapAudit';
 
@@ -61,6 +62,7 @@ function App() {
           {/* Main Entry */}
           <Route path="/" element={<PortalHome />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/showcase" element={<Showcase />} />
 
           {/* Customer App (Mobile Layout) */}
           <Route path="/customer" element={
