@@ -41,3 +41,15 @@ When we are ready to deploy the backend version:
 ## 7. Security Warning
 - **Anon Key:** The `anon` key is safe to be exposed in the browser because the database uses Row Level Security (RLS) to enforce rules.
 - **Service Role Key:** The `service_role` key bypasses all RLS. It must only be used in secure backend environments (like Supabase Edge Functions or a separate Node server). Never put it in Vite environment variables.
+
+## 8. Sprint 4A: Safe Foundation & Environment Preparation
+In Sprint 4A, we introduced the `@supabase/supabase-js` client in a "safe fallback" configuration. The goal is to build the adapter infrastructure without breaking the existing local storage demo mode.
+
+### Safe Fallback
+If `VITE_DATA_SOURCE=supabase` but the URL or Key is missing, the application will catch the missing keys and gracefully degrade to localStorage mode without crashing or throwing a white screen.
+
+### Adapter Strategy
+We have introduced an `adapterSelector.js` in `src/services/adapters/`. It checks the environment variable and imports either `localStorageAdapter` or the skeleton `supabaseAdapter`. This ensures that all components relying on `DemoContext` can eventually switch backends by updating a single environment variable, without massive codebase rewrites.
+
+### Rollback
+To rollback to pure localStorage demo mode at any time, simply delete the `.env.local` file or explicitly set `VITE_DATA_SOURCE=localStorage`.

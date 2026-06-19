@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Settings as SettingsIcon, Globe, Map, ShieldAlert, Save } from 'lucide-react';
+import { Settings as SettingsIcon, Globe, Map, ShieldAlert, Save, Database, CheckCircle2, Info } from 'lucide-react';
 import SectionHeader from '../../components/shared/SectionHeader';
 
 export default function Settings() {
@@ -92,6 +92,41 @@ export default function Settings() {
               <button className="px-3 py-1 border border-dashed border-gray-300 rounded-lg text-sm text-gray-500 hover:bg-gray-50">
                 + إضافة دولة
               </button>
+            </div>
+          </div>
+          
+          {/* Backend & Data Source Settings */}
+          <div className="space-y-6 md:col-span-2 mt-4 pt-6 border-t border-gray-100">
+            <h4 className="font-bold text-gray-900 border-b pb-2 flex items-center gap-2">
+              <Database size={18} className="text-primary" /> حالة قاعدة البيانات والخادم الخلفي
+            </h4>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">مصدر البيانات (DATA_SOURCE)</p>
+                <p className="font-bold text-gray-900">{import.meta.env.VITE_DATA_SOURCE || 'localStorage'}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">رابط Supabase (URL)</p>
+                <p className="font-bold text-gray-900">{import.meta.env.VITE_SUPABASE_URL ? 'تمت الإضافة ✅' : 'مفقود ❌'}</p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">حالة العميل (Client)</p>
+                <p className="font-bold text-gray-900">
+                  {(import.meta.env.VITE_DATA_SOURCE === 'supabase' && import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY) 
+                    ? 'متصل' 
+                    : 'غير متصل (Local Fallback)'}
+                </p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1 font-bold uppercase tracking-wide">وضع الديمو (Context)</p>
+                <p className="font-bold text-success flex items-center gap-1">نشط <CheckCircle2 size={14} /></p>
+              </div>
+            </div>
+            
+            <div className="bg-blue-50 border border-blue-200 p-4 rounded-xl flex gap-3 text-blue-800 text-sm">
+              <Info size={20} className="shrink-0" />
+              <p>يتم حالياً الانتقال التدريجي نحو Supabase. واجهة العميل والمطعم والمندوب تعمل على الـ LocalStorage الافتراضي لضمان استقرار العرض التجريبي.</p>
             </div>
           </div>
           
